@@ -1,6 +1,6 @@
 <?php
 
-namespace SR\Base\GeoDataTest;
+namespace SR\GeoDataTest\Base;
 
 use PDO;
 
@@ -35,10 +35,32 @@ class BaseCoordinates
     public function getAllPoints()
     {
         $sql = "SELECT id, lat, lon from {$this->tableName} order by id";
-        $dbRes = $this->connection->query($sql);
-        $data = $dbRes->fetchAll();
-        return $data;
+        return $this->query($sql);
     }
 
-    abstract function getPoints();
+    public function getPoints()
+    {
+
+    }
+
+    /**
+     * @return PDO
+     */
+    public function getConnection()
+    {
+        return $this->connection;
+    }
+
+    /**
+     * @param $sql
+     * @param null $fetchStyle
+     * @return array
+     *
+     * public because it is test :)
+     */
+    public function query($sql, $fetchStyle = null)
+    {
+        $stt = $this->connection->query($sql);
+        return $stt->fetchAll($fetchStyle);
+    }
 }
