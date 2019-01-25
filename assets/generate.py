@@ -1,11 +1,11 @@
 import MySQLdb
 import settings
 from random import shuffle
-from scipy.stats import logistic as logist
+from scipy.stats import norm as norm
 
-lat = logist.rvs(loc=55.75, scale=0.06, size=settings.set_size, random_state=32)
-lon = logist.rvs(loc=37.62, scale=0.07, size=settings.set_size, random_state=32)
-shuffle(lon)
+lat = norm.rvs(loc=55.75, scale=0.09, size=settings.set_size, random_state=29)
+lon = norm.rvs(loc=37.62, scale=0.107, size=settings.set_size, random_state=72)
+
 many_coords = [(float(lat[x]), float(lon[x])) for x in range(0, len(lat))]
 
 conn = MySQLdb.connect(db=settings.db, host=settings.host, port=settings.port, user=settings.user, passwd=settings.passwd)

@@ -6,6 +6,8 @@ use PDO;
 
 class BaseCoordinates
 {
+    const DEGREE_LENGTH_IN_METERS = 111153;
+
     /**
      * @var PDO
      */
@@ -40,13 +42,43 @@ class BaseCoordinates
 
     public function getPoints()
     {
+    }
 
+    /**
+     * @param $lat
+     * @param $lon
+     * @param $radiusInMeters
+     * @param string $latColumn
+     * @param string $lonColumn
+     * @return string
+     *
+     * return value should be used as-is in SELECT statement
+     */
+    public function getSqlSquareWhere($lat, $lon, $radiusInMeters, $latColumn = 'LAT', $lonColumn = 'LON'): string
+    {
+        $meridianLengthInDegrees = $radiusInMeters / self::DEGREE_LENGTH_IN_METERS;
+        $parallelLengthInDegrees = $radiusInMeters / (self::DEGREE_LENGTH_IN_METERS * $this->getParallelMultiplier($lat));
+        $upperPart = $lat + $radiusInDegrees;
+        $lowerPart = $lat - $radiusInDegrees;
+        $leftPart = $lon - $parallelLengthInDegrees;
+        $rightPart = $lon + $parallelLengthInDegrees;
+
+        return <<<WHERE
+        ($latColumn < $upperPart AND $latColumn > $lowerPart) AND
+        ($lonColumn < $rightPart AND $lonColumn > $leftPart)
+WHERE;
+
+    }
+
+    private function getParallelMultiplier(float $lat): float
+    {
+        return cos(deg2rad($lat));
     }
 
     /**
      * @return PDO
      */
-    public function getConnection()
+    public function getConnection(): PDO
     {
         return $this->connection;
     }
