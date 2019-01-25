@@ -32,16 +32,41 @@ class BaseCoordinates
     }
 
     /**
-     * @return array
+     * @return array|null
      */
-    public function getAllPoints()
+    public function getAllPoints(): ?array
     {
         $sql = "SELECT id, lat, lon from {$this->tableName} order by id";
         return $this->query($sql);
     }
 
-    public function getPoints()
+    /**
+     * return array|null
+     */
+    public function getPoints($lat, $lon, $radiusInMeters): ?array
     {
+        $sql = <<<SQL
+    SELECT id, lat, lon from {$this->tableName} 
+    where {$this->getSqlSquareWhere($lat, $lon, $radiusInMeters)} AND {$this->getCustomWhere($lat, $lon, $radiusInMeters)} 
+    order by id
+SQL;
+        return $this->query($sql);
+    }
+
+    /**
+     * @param $lat
+     * @param $lon
+     * @param $radiusInMeters
+     * @param string $latColumn
+     * @param string $lonColumn
+     * @return string
+     *
+     * Keeps class-specific logic of select
+     */
+    public function getCustomWhere($lat, $lon, $radiusInMeters, $latColumn = 'LAT', $lonColumn = 'LON'): string
+    {
+        /** TODO - implement in subclasses */
+        return '1 = 1';
     }
 
     /**
