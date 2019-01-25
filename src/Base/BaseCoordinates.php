@@ -58,8 +58,8 @@ class BaseCoordinates
     {
         $meridianLengthInDegrees = $radiusInMeters / self::DEGREE_LENGTH_IN_METERS;
         $parallelLengthInDegrees = $radiusInMeters / (self::DEGREE_LENGTH_IN_METERS * $this->getParallelMultiplier($lat));
-        $upperPart = $lat + $radiusInDegrees;
-        $lowerPart = $lat - $radiusInDegrees;
+        $upperPart = $lat + $meridianLengthInDegrees;
+        $lowerPart = $lat - $meridianLengthInDegrees;
         $leftPart = $lon - $parallelLengthInDegrees;
         $rightPart = $lon + $parallelLengthInDegrees;
 
