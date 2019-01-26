@@ -11,12 +11,12 @@ class BaseCoordinates
     /**
      * @var PDO
      */
-    private $connection;
+    protected $connection;
 
     /**
      * @var string
      */
-    private $tableName;
+    protected $tableName;
 
     /**
      * BaseCoordinates constructor.
@@ -50,6 +50,7 @@ class BaseCoordinates
     where {$this->getSqlSquareWhere($lat, $lon, $radiusInMeters)} AND {$this->getCustomWhere($lat, $lon, $radiusInMeters)} 
     order by id
 SQL;
+
         return $this->query($sql);
     }
 
@@ -95,7 +96,7 @@ WHERE;
 
     }
 
-    private function getParallelMultiplier(float $lat): float
+    protected function getParallelMultiplier(float $lat): float
     {
         return cos(deg2rad($lat));
     }
