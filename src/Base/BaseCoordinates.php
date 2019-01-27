@@ -46,11 +46,11 @@ class BaseCoordinates
     public function getPoints($lat, $lon, $radiusInMeters): ?array
     {
         $sql = <<<SQL
-    SELECT id, lat, lon from {$this->tableName} 
+    SELECT id, lat, lon {$this->getCustomSelect($lat, $lon, $radiusInMeters)} from {$this->tableName} 
     where {$this->getSqlSquareWhere($lat, $lon, $radiusInMeters)} AND {$this->getCustomWhere($lat, $lon, $radiusInMeters)} 
     order by id
 SQL;
-
+        //echo $sql; die();
         return $this->query($sql);
     }
 
@@ -68,6 +68,18 @@ SQL;
     {
         /** TODO - implement in subclasses */
         return '1 = 1';
+    }
+
+
+    /**
+     * @return string
+     *
+     * Keeps specific select for queries
+     */
+    public function getCustomSelect($lat, $lon, $radiusInMeters, $latColumn = 'LAT', $lonColumn = 'LON'): string
+    {
+        /** TODO - implement in subclasses */
+        return '';
     }
 
     /**
