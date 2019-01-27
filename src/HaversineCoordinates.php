@@ -56,7 +56,7 @@ class HaversineCoordinates extends BaseCoordinates
     {
         $procName = self::PROCEDURE_NAME;
         return <<<WHERE
-        {$procName}({$latColumn}, {$lonColumn}, {$lat}, $lon) < {$radiusInMeters};
+        {$procName}({$latColumn}, {$lonColumn}, {$lat}, $lon) < {$radiusInMeters}
 WHERE;
     }
 
@@ -108,7 +108,7 @@ WHERE;
               SIN(($latColumn - ABS($lat)) * {$piBy180} / 2),
               2
             ) +
-            COS($latColumn * PI() / 180) *
+            lat_cos *
             COS(ABS($lat) * {$piBy180}) *
             POWER(
               SIN(($lonColumn - $lon) * {$piBy180} / 2),
