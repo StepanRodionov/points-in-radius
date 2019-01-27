@@ -28,4 +28,5 @@ class MercatorCoordinates extends BaseCoordinates
         POW(({$lonColumn} - {$lon}) * {$parallelDegreeLength}, 2) < {$powedRadius}
 WHERE;
     }
+
 }
