@@ -17,6 +17,7 @@ class HaversineCoordinates extends BaseCoordinates
         'simple' => 'getSimpleWhere',
         'proc' => 'getProcedure',
         'opt' => 'getOprimizedWhere',
+        'more_opt' => 'getMoreOptimizedWhere',
     ];
 
     private $typeWhere;
@@ -110,6 +111,37 @@ WHERE;
             ) +
             lat_cos *
             COS(ABS($lat) * {$piBy180}) *
+            POWER(
+              SIN(($lonColumn - $lon) * {$piBy180} / 2),
+              2
+            )
+        )
+      ) < {$radiusInMeters}
+WHERE;
+    }
+
+    /**
+     * @param $lat
+     * @param $lon
+     * @param $radiusInMeters
+     * @param $latColumn
+     * @param $lonColumn
+     * @return string
+     */
+    private function getMoreOptimizedWhere($lat, $lon, $radiusInMeters, $latColumn, $lonColumn)
+    {
+        $radius = self::EARTH_RADIUS_IN_METERS;
+        $piBy180 = pi() / 180;
+        $secondCos = cos(deg2rad($lat));
+        return <<<WHERE
+        {$radius} * 2 * ASIN(
+        SQRT(
+            POWER(
+              SIN(($latColumn - ABS($lat)) * {$piBy180} / 2),
+              2
+            ) +
+            COS($latColumn * PI() / 180) *
+            {$secondCos} *
             POWER(
               SIN(($lonColumn - $lon) * {$piBy180} / 2),
               2
