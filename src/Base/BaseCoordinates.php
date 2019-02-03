@@ -41,7 +41,10 @@ class BaseCoordinates
     }
 
     /**
-     * return array|null
+     * @param $lat
+     * @param $lon
+     * @param $radiusInMeters
+     * @return array|null
      */
     public function getPoints($lat, $lon, $radiusInMeters): ?array
     {
@@ -50,7 +53,7 @@ class BaseCoordinates
     where {$this->getSqlSquareWhere($lat, $lon, $radiusInMeters)} AND {$this->getCustomWhere($lat, $lon, $radiusInMeters)} 
     order by id
 SQL;
-        //echo $sql; die();
+        //  echo $sql; die();       //  Uncomment to get SQL query in your browser
         return $this->query($sql);
     }
 
@@ -109,6 +112,10 @@ WHERE;
 
     }
 
+    /**
+     * @param float $lat
+     * @return float
+     */
     protected function getParallelMultiplier(float $lat): float
     {
         return cos(deg2rad($lat));
