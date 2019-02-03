@@ -1,14 +1,5 @@
 <?php
 
-use Main\DataBase\Connection;
-use Main\Enum\Variables;
-
-require '../../vendor/autoload.php';
-
-$pdo = Connection::getInstance()->getConnection();
-
-$res = $pdo->query("show tables;");
-
 
 ?>
 <!DOCTYPE html>

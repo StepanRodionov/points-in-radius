@@ -1,15 +1,13 @@
 <?php
 
-require '../../vendor/autoload.php';
-
-use Main\DataBase\Connection;
 use SR\GeoDataTest\Base\BaseCoordinates;
 use SR\GeoDataTest\HaversineCoordinates;
 use SR\GeoDataTest\MercatorCoordinates;
 use SR\GeoDataTest\GeometryCoordinates;
 
 try {
-    $pdo = Connection::getInstance()->getConnection();
+    //  Необходимо определить корректные настройки для подключения к БД
+    $pdo = new PDO($dsn, $username, $passwd, $options);
     $geoPointsProvider = new GeometryCoordinates($pdo, 'points');
 
 
