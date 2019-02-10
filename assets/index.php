@@ -29,12 +29,28 @@
             zoom: 9
         });
 
-        const pointsSets = {
+        var pointsSets = {
             all: {color: 'blue'},
             firstCircle: {color: 'red', radius: 2000, center: [55.751374, 37.616758], circleColor: '#ff0000'},
             secondCircle: {color: 'darkGreen', radius: 3000, center: [55.849967, 37.439600], circleColor: '#00ff00'},
             thirdCircle: {color: 'black', radius: 4000, center: [55.683455, 37.622609], circleColor: '#000000'}
         };
+
+        const longRadiusCircle = [
+            {color: 'red', radius: 100000, center: [55.762121, 39.204793], circleColor: '#ff0000'},
+            {color: 'red', radius: 100000, center: [54.851360, 37.665257], circleColor: '#ff0000'},
+            {color: 'red', radius: 100000, center: [56.273250, 36.314308], circleColor: '#ff0000'},
+            {color: 'red', radius: 100000, center: [55.351073, 36.196440], circleColor: '#ff0000'},
+            {color: 'red', radius: 100000, center: [56.650848, 37.644335], circleColor: '#ff0000'}
+        ];
+
+        /*
+        //  Uncomment to test big circles
+        pointsSets = {
+            all: {color: 'blue'},
+            firstCircle: longRadiusCircle[2]
+        };
+        */
 
         var collections = {};
 
@@ -48,6 +64,11 @@
             $('#start').click(function () {
                 $.ajax({
                     url: '/src/api/geo/resolve_request.php',
+                    //url: '/src/api/geo/newrequest.php',           //  uncomment to test big circles
+                    data: {
+                        radius: pointsSets.firstCircle.radius,
+                        center: pointsSets.firstCircle.center
+                    },
                     success: function(points){
                         for(let key in pointsSets){
                             let collection = collections[key];
@@ -70,7 +91,7 @@
                             }, {
                                 fillColor: pointSetData.circleColor,
                                 fillOpacity: 0.3,
-
+                                geodesic: true,
                                 strokeColor: pointSetData.circleColor,
                                 strokeOpacity: 0.8,
                                 strokeWidth: 3
