@@ -53,7 +53,6 @@ class BaseCoordinates
     where {$this->getSqlSquareWhere($lat, $lon, $radiusInMeters)} AND {$this->getCustomWhere($lat, $lon, $radiusInMeters)} 
     order by id
 SQL;
-        //  echo $sql; die();       //  Uncomment to get SQL query in your browser
         return $this->query($sql);
     }
 
@@ -97,7 +96,6 @@ SQL;
      */
     public function getSqlSquareWhere($lat, $lon, $radiusInMeters, $latColumn = 'LAT', $lonColumn = 'LON'): string
     {
-        //return '1 = 1';       // uncomment to remove square where
         $meridianLengthInDegrees = $radiusInMeters / self::DEGREE_LENGTH_IN_METERS;
         $parallelLengthInDegrees = $radiusInMeters / (self::DEGREE_LENGTH_IN_METERS * $this->getParallelMultiplier($lat));
         $upperPart = $lat + $meridianLengthInDegrees;
