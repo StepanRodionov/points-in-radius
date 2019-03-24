@@ -4,6 +4,7 @@
 namespace SR\GeoDataTest;
 
 use SR\GeoDataTest\Base\BaseCoordinates;
+use SR\GeoDataTest\Dto\Point;
 
 class CustomPolygonCoordinates extends BaseCoordinates
 {
@@ -32,7 +33,7 @@ SQL;
      * @param string $type
      * @return string
      */
-    public function getPolygonWhere(array $polygon, string $type = self::TYPE_GEOJSON): string
+    public function getPolygonWhere(array $polygon, string $type = self::TYPE_GEOPOLYGON): string
     {
         if($type === self::TYPE_GEOJSON){
             return $this->createGeoJsonWhere($polygon);
@@ -42,20 +43,32 @@ SQL;
     }
 
     /**
-     * @param $polygon
+     * @param array $polygon
      * @return string
      */
-    private function createGeoJsonWhere($polygon): string
+    private function createGeoJsonWhere(array $polygon): string
     {
         return '1 = 1';
     }
 
     /**
-     * @param $polygon
+     * @param array<Point> $polygon
      * @return string
      */
-    private function createGeoPolygonWhere($polygon): string
+    private function createGeoPolygonWhere(array $polygon): string
     {
-        return '1 = 1';
+        $strPolygon = implode(', ', $polygon);
+        return <<<WHERE
+        (ST_WITHIN(
+            g, 
+            ST_GeomFromText(
+                "POLYGON(
+                    (
+                        {$strPolygon}
+                    )
+                )", 4326
+            )
+        ))
+WHERE;
     }
 }

@@ -37,8 +37,6 @@ WHERE;
      */
     public function getSqlSquareWhere($lat, $lon, $radiusInMeters, $latColumn = 'LAT', $lonColumn = 'LON'): string
     {
-        // return '1 = 1';       // uncomment to remove square where
-        // return parent::getSqlSquareWhere($lat, $lon, $radiusInMeters, $latColumn, $lonColumn);
         $meridianLengthInDegrees = $radiusInMeters / self::DEGREE_LENGTH_IN_METERS;
         $parallelLengthInDegrees = $radiusInMeters / (self::DEGREE_LENGTH_IN_METERS * $this->getParallelMultiplier($lat));
         $upperPart = $lat + $meridianLengthInDegrees;
