@@ -57,6 +57,10 @@ SQL;
      */
     private function createGeoPolygonWhere(array $polygon): string
     {
+        //  Полигон обязательно должен замыкаться!
+        if($polygon[0] !== end($polygon)){
+            $polygon[] = $polygon[0];
+        }
         $strPolygon = implode(', ', $polygon);
         return <<<WHERE
         (ST_WITHIN(
